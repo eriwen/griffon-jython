@@ -1,0 +1,14 @@
+<plugin name='jython' version='0.1' griffonVersion='0.9 &gt; *' jdk='1.5'>
+  <author>Eric Wendelin</author>
+  <authorEmail>emwendelin@gmail.com</authorEmail>
+  <title>Enables Jython</title>
+  <description>Enables the usage of Jython on your Griffon application.</description>
+  <documentation>http://griffon.codehaus.org/Jython+Plugin</documentation>
+  <license>Apache Software License 2.0</license>
+  <resources>
+    <resource>BuildConfig</resource>
+  </resources>
+  <dependencies>
+    <plugin name='lang-bridge' version='0.4.1' />
+  </dependencies>
+</plugin>
