@@ -19,6 +19,6 @@ class CreateJythonClassTests extends AbstractCliTestCase {
 			fail "Expected new Jython class ${newJythonClassPath}"
 		}
 		newJythonClassFile.delete()
-		(new File('src/jython/griffonjython')).rmdir()
+		(new File('src/jython/griffonjython')).delete()
     }
 }

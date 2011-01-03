@@ -28,7 +28,7 @@ includePluginScript("jython", "_JythonCommon")
 target(default: "Run Jython REPL") {
     depends(checkVersion, classpath)
 
-    ant.fileset(dir: "${jythonPluginDir}/lib/repl/", includes:"*.jar").each { jar ->
+    ant.fileset(dir: "${jythonPluginDir}/lib/", includes:"*.jar").each { jar ->
         classLoader.addURL(jar.file.toURI().toURL())
     }
     
