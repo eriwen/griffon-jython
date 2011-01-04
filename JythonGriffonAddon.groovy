@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 the original author or authors.
+ * Copyright 2009-2011 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,17 +35,14 @@ class JythonGriffonAddon {
 
    def events = [
       BootstrapEnd: { app ->
-	      // Load Jython resources on bootstrap
-          loadSources(app, 'classpath*:/py/**/*.py')
+          // Load Jython resources on bootstrap
+          loadSources(app, 'classpath*:/jython/**/*.py')
       },
       NewInstance: { klass, type, instance ->
-	     // Inject jython property into all Controller class instances
+         // Inject jython property into all Controller class instances
          def types = app.config.griffon?.jython?.injectInto ?: ['controller']
          if(!types.contains(type)) return
-         instance.metaClass."get${jythonPropertyName}" = { 
-	        // what to return here?
-	        // create JYTHON_PROXY?
-	     }
+          instance.metaClass."get${jythonPropertyName}" = { /* TODO: create JYTHON_PROXY? */ }
          instance.metaClass."${jythonPropertyName[0].toLowerCase() + jythonPropertyName[1..-1]}Load" = loadSources.curry(app)
       }
    ]
@@ -55,7 +52,7 @@ class JythonGriffonAddon {
       Class compilerClass = app.class.classLoader.loadClass('org.python.util.PythonInterpreter')
       def pythonInterpreter = compilerClass.newInstance()
       pathResolver.getResources(path).each {
-	     pythonInterpreter.exec it.getURL().getText()
+         pythonInterpreter.exec it.getURL().getText()
       }
    }
 }
