@@ -22,37 +22,22 @@
 includeTargets << griffonScript("Init")
 includePluginScript("jython", "_JythonCommon")
 
-eventSetClasspath = { classLoader ->
-    if(compilingJythonPlugin()) return
-
-    ant.fileset(dir: "${getPluginDirForName('jython').file}/lib", includes: "*.jar").each {
-        if(getPluginDirForName('spring')?.file && it.toString() =~ "spring") return
-		addUrlIfNotPresent classLoader, it.file
-    }
-}
-
-def eventClosure1 = binding.variables.containsKey('eventCopyLibsEnd') ? eventCopyLibsEnd : {jardir->}
-eventCopyLibsEnd = { jardir ->
-    eventClosure1(jardir)
-    if (!isPluginProject) {
-        ant.fileset(dir:"${getPluginDirForName('jython').file}/lib/", includes:"*.jar").each {
-            if(getPluginDirForName('spring')?.file && it.toString() =~ "spring") return
-            griffonCopyDist(it.toString(), jardir)
-        }
-    }
+def eventClosure1 = binding.variables.containsKey('eventSetClasspath') ? eventSetClasspath : {cl->}
+eventSetClasspath = { cl ->
+    eventClosure1(cl)
+    if(compilingPlugin('jython')) return
+    griffonSettings.dependencyManager.flatDirResolver name: 'griffon-jython-plugin', dirs: "${jythonPluginDir}/addon"
+    griffonSettings.dependencyManager.addPluginDependency('jython', [
+        conf: 'compile',
+        name: 'griffon-jython-addon',
+        group: 'org.codehaus.griffon.plugins',
+        version: jythonPluginVersion
+    ])
 }
 
 eventCompileStart = {
-    if(compilingJythonPlugin()) return
+    if(compilingPlugin('jython')) return
     compileJythonSrc()
-}
-
-/**
- * Detects whether we're compiling the Jython plugin itself
- */
-/*private boolean compilingJythonPlugin() { getPluginDirForName("jython") == null }*/
-private boolean compilingJythonPlugin() { 
-	getPluginDirForName('jython')?.file?.canonicalPath == basedir
 }
 
 eventStatsStart = { pathToInfo ->
@@ -72,25 +57,3 @@ eventStatsStart = { pathToInfo ->
         }]
     }
 }
-
-def eventClosure2 = binding.variables.containsKey('eventCopyLibsEnd') ? eventCopyLibsEnd : {jardir->}
-eventCopyLibsEnd = { jardir ->
-    eventClosure2(jardir)
-    if (!isPluginProject) {
-        ant.fileset(dir:"${getPluginDirForName('jython').file}/lib/", includes:"*.jar").each {
-            griffonCopyDist(it.toString(), jardir)
-        }
-    }
-}
-
-
-def eventClosure3 = binding.variables.containsKey('eventCopyLibsEnd') ? eventCopyLibsEnd : {jardir->}
-eventCopyLibsEnd = { jardir ->
-    eventClosure3(jardir)
-    if (!isPluginProject) {
-        ant.fileset(dir:"${getPluginDirForName('jython').file}/lib/", includes:"*.jar").each {
-            griffonCopyDist(it.toString(), jardir)
-        }
-    }
-}
-

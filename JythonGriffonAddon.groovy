@@ -24,7 +24,7 @@ import org.python.util.PythonInterpreter
 class JythonGriffonAddon {
    private String jythonPropertyName
 
-   def addonInit = { app ->
+   void addonInit(GriffonApplication app) {
       jythonPropertyName = app.config.griffon?.jython?.dynamicPropertyName ?: 'py'
       if(jythonPropertyName) {
           jythonPropertyName = jythonPropertyName[0].toUpperCase() + jythonPropertyName[1..-1]
@@ -34,7 +34,7 @@ class JythonGriffonAddon {
    }
 
    def events = [
-      BootstrapEnd: { app ->
+      BootstrapStart: { app ->
           // Load Jython resources on bootstrap
           loadSources(app, 'classpath*:/jython/**/*.py')
       },

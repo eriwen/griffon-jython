@@ -74,17 +74,16 @@ target(compileJythonTest: "") {
 defineJythonCompilePath = { srcdir, destdir ->
     ant.path(id: "jython.compile.classpath") {
         path(refid: "griffon.compile.classpath")
-        fileset(dir: "${getPluginDirForName('jython').file}/lib", includes: "*.jar")
-        path(location: destdir)
-        path(location: srcdir)
+        pathElement(location: destdir)
+        pathElement(location: srcdir)
     }
 }
 
 defineJythonTestPath = { srcdir, destdir ->
     ant.path(id: "jython.test.classpath") {
         path(refid: "jython.compile.classpath")
-        path(location: destdir)
-        path(location: srcdir)
+        pathElement(location: destdir)
+        pathElement(location: srcdir)
     }
 }
 
@@ -94,5 +93,3 @@ compileJythonFiles = { jythonsrcdir, classesDirPath ->
 		classpath { path(refid: 'jython.compile.classpath') }
 	}
 }
-
-private boolean compilingJythonPlugin() { getPluginDirForName("jython") == null }

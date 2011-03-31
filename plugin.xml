@@ -1,4 +1,4 @@
-<plugin name='jython' version='0.1' griffonVersion='0.9 &gt; *' jdk='1.5'>
+<plugin name='jython' version='0.2' griffonVersion='0.9.2 &gt; *' jdk='1.5'>
   <author>Eric Wendelin</author>
   <authorEmail>emwendelin@gmail.com</authorEmail>
   <title>Enables Jython</title>
@@ -9,6 +9,6 @@
     <resource>BuildConfig</resource>
   </resources>
   <dependencies>
-    <plugin name='lang-bridge' version='0.4.1' />
+    <plugin name='lang-bridge' version='0.4.2' />
   </dependencies>
 </plugin>

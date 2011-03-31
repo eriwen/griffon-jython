@@ -30,7 +30,7 @@ public class JythonObjectFactory {
     // a coerced Jython object based upon the pieces of information
     // that were passed into the factory. The differences are
     // between them are the number of arguments that can be passed
-    // in as arguents to the object.
+    // in as arguments to the object.
    
     public Object createObject() {
         return klass.__call__().__tojava__(interfaceType)

@@ -18,9 +18,9 @@
  * @author Eric Wendelin
  */
 class JythonGriffonPlugin {
-    def version = '0.1'
-    def dependsOn = ['lang-bridge': '0.4.1']
-    def griffonVersion = '0.9 > *'
+    def version = '0.2'
+    def dependsOn = ['lang-bridge': '0.4.2']
+    def griffonVersion = '0.9.2 > *'
     def license = 'Apache Software License 2.0'
 
     def author = 'Eric Wendelin'

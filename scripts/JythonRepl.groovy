@@ -26,15 +26,10 @@ includeTargets << griffonScript("_GriffonPackage")
 includePluginScript("jython", "_JythonCommon")
 
 target(default: "Run Jython REPL") {
-    depends(checkVersion, classpath)
+    depends(checkVersion, classpath, packageApp)
 
-    ant.fileset(dir: "${jythonPluginDir}/lib/", includes:"*.jar").each { jar ->
-        classLoader.addURL(jar.file.toURI().toURL())
-    }
-    
-    classLoader.parent.addURL(classesDir.toURI().toURL())
-    classLoader.parent.addURL("file:${basedir}/griffon-app/resources/".toURL())
-    classLoader.parent.addURL("file:${basedir}/griffon-app/i18n/".toURL())
+    addUrlIfNotPresent classLoader.parent, classesDir
+    addUrlIfNotPresent classLoader.parent, resourcesDir
 
 	//TODO: setup python interpreter to allow up-arrow etc. May have to use JLine
     PythonInterpreter pi = new PythonInterpreter()
