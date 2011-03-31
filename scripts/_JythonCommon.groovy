@@ -21,12 +21,18 @@
  * @since 0.1
  */
 
+import org.codehaus.groovy.runtime.StackTraceUtils
+
+includeTargets << griffonScript('_GriffonArgParsing')
+
 import org.python.core.PyException
 import org.python.core.PySystemState
 import org.python.core.imp as JythonImp
 import org.python.modules._py_compile
 
-target(compileJythonSrc: "") {
+target(name: 'compileJythonSrc', description: "", prehook: null, posthook: null) {
+    depends(parseArguments)
+
 	includePluginScript("lang-bridge", "CompileCommons")
     compileCommons()
     def jythonsrc = "${basedir}/src/jython"
@@ -44,11 +50,18 @@ target(compileJythonSrc: "") {
         compileJythonFiles(jythonsrcdir, classesDirPath)
     }
     catch (Exception e) {
-        ant.fail(message: "Could not compile Jython sources: " + e.class.simpleName + ": " + e.message)
+        if(argsMap.verboseCompile) {
+            StackTraceUtils.deepSanitize(e)
+            e.printStackTrace(System.err)
+        }
+        event("StatusFinal", ["Compilation error: ${e.message}"])
+        exit(1)
     }
 }
 
-target(compileJythonTest: "") {
+target(name: 'compileJythonTest', description: "", prehook: null, posthook: null) {
+    depends(parseArguments)
+
     def jythontest = "${basedir}/test/jython"
     def jythontestdir = new File(jythontest)
     if(!jythontestdir.exists() || !jythontestdir.list().size()) {
@@ -67,7 +80,12 @@ target(compileJythonTest: "") {
 		compileJythonFiles(jythontestdir, destdir)
     }
     catch (Exception e) {
-        ant.fail(message: "Could not compile Jython test sources: " + e.class.simpleName + ": " + e.message)
+        if(argsMap.verboseCompile) {
+            StackTraceUtils.deepSanitize(e)
+            e.printStackTrace(System.err)
+        }
+        event("StatusFinal", ["Compilation error: ${e.message}"])
+        exit(1)
     }
 }
 
