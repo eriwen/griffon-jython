@@ -4,7 +4,7 @@ The Jython plugin enables compiling and running Jython code on your Griffon appl
 
 ##  Installation
 
-The current version of *griffon-jython-plugin* is *0.1*
+The current version of *griffon-jython-plugin* is *0.2*
 
 To install just issue the following command:
 
