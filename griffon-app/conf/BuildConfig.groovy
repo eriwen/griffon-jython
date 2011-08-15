@@ -8,11 +8,11 @@ griffon.project.dependency.resolution = {
         mavenCentral()
     }
     dependencies {
-        build   'org.python:jython:2.5.0'
-        compile 'org.python:jython:2.5.0'
+        build 'org.python:jython-standalone:2.5.2'
+        compile 'org.python:jython-standalone:2.5.2'
 
         def springVersion = '3.0.5.RELEASE'
-        compile("org.springframework:org.springframework.core:$springVersion") {
+        compile("org.springframework:spring-core:$springVersion") {
             transitive = false
         }
     }
