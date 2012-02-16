@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 the original author or authors.
+ * Copyright 2010-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ includePluginScript("jython", "_JythonCommon")
 target(default: "Run Jython REPL") {
     depends(checkVersion, classpath, packageApp)
 
-    addUrlIfNotPresent classLoader.parent, classesDir
+    addUrlIfNotPresent classLoader.parent, projectMainClassesDir
     addUrlIfNotPresent classLoader.parent, resourcesDir
 
 	//TODO: setup python interpreter to allow up-arrow etc. May have to use JLine

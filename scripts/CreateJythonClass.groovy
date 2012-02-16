@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 the original author or authors.
+ * Copyright 2010-2012 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@
 
 import org.codehaus.griffon.commons.GriffonClassUtils as GCU
 
-includeTargets << griffonScript("_GriffonInit")
 includeTargets << griffonScript("_GriffonCreateArtifacts")
 
 target(default: "Creates a new Jython class") {
@@ -35,7 +34,6 @@ target(default: "Creates a new Jython class") {
     def clazz = "${pkg}.${clazzName}"
 
     def packageDir = new File("${basedir}/src/jython/${pkg.replace('.','/')}")
-    println packageDir
     packageDir.mkdirs()
 
     def classFile = new File(packageDir, "${name}.py") 
