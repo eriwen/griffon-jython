@@ -21,8 +21,8 @@ griffon.project.dependency.resolution = {
         // flatDir name: "jythonLibDir", dirs: ["${basePath}lib"]
     }
     dependencies {
-        build   'org.python:jython:2.5.0'
-        compile 'org.python:jython:2.5.0'
+        build 'org.python:jython-standalone:2.5.2'
+        compile 'org.python:jython-standalone:2.5.2'
 
         compile("org.springframework:org.springframework.core:$springVersion") {
             transitive = false

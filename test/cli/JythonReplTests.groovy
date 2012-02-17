@@ -5,7 +5,7 @@ import griffon.test.AbstractCliTestCase
  */
 class JythonReplTests extends AbstractCliTestCase {
     void testDefault() {
-        execute([ "jython-repl" ])
+        execute(["jython-repl"])
 
         assertEquals 0, waitForProcess()
         verifyHeader()
