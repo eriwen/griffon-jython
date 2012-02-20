@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2010-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@
  * @since 0.1
  */
 
-import org.codehaus.groovy.runtime.StackTraceUtils
+import griffon.util.GriffonExceptionHandler
 
-includeTargets << griffonScript('_GriffonArgParsing')
+includePluginScript('lang-bridge', '_Commons')
 
 import org.python.core.PyException
 import org.python.core.PySystemState
@@ -31,10 +31,8 @@ import org.python.core.imp as JythonImp
 import org.python.modules._py_compile
 
 target(name: 'compileJythonSrc', description: "", prehook: null, posthook: null) {
-	depends(parseArguments)
+	depends(parseArguments, compileCommons)
 
-	includePluginScript("lang-bridge", "CompileCommons")
-	compileCommons()
 	def jythonsrc = "${basedir}/src/jython"
 	def jythonsrcdir = new File(jythonsrc)
 	if(!jythonsrcdir.exists() || !jythonsrcdir.list().size()) {
@@ -42,16 +40,16 @@ target(name: 'compileJythonSrc', description: "", prehook: null, posthook: null)
 		return
 	}
 
-	if(sourcesUpToDate("${basedir}/src/jython", classesDirPath, ".py")) return
+	if(sourcesUpToDate("${basedir}/src/jython", projectMainClassesDir, ".py")) return
 
-	ant.echo(message: "[jython] Compiling Jython sources to $classesDirPath")
+	ant.echo(message: "[jython] Compiling Jython sources to $projectMainClassesDir")
 	try {
-		defineJythonCompilePath(jythonsrc, classesDirPath)
-		compileJythonFiles(jythonsrcdir, classesDirPath)
+		defineJythonCompilePath(jythonsrc, projectMainClassesDir)
+		compileJythonFiles(jythonsrcdir, projectMainClassesDir)
 	}
 	catch (Exception e) {
-		if(argsMap.verboseCompile) {
-			StackTraceUtils.deepSanitize(e)
+		if(argsMap.compileTrace) {
+			GriffonExceptionHandler.sanitize(e)
 			e.printStackTrace(System.err)
 		}
 		event("StatusFinal", ["Compilation error: ${e.message}"])
@@ -80,8 +78,8 @@ target(name: 'compileJythonTest', description: "", prehook: null, posthook: null
 		compileJythonFiles(jythontestdir, destdir)
 	}
 	catch (Exception e) {
-		if(argsMap.verboseCompile) {
-			StackTraceUtils.deepSanitize(e)
+		if(argsMap.compileTrace) {
+			GriffonExceptionHandler.sanitize(e)
 			e.printStackTrace(System.err)
 		}
 		event("StatusFinal", ["Compilation error: ${e.message}"])
@@ -95,6 +93,13 @@ defineJythonCompilePath = { srcdir, destdir ->
 		pathElement(location: destdir)
 		pathElement(location: srcdir)
 	}
+
+	if (argsMap.compileTrace) {
+		println('-' * 80)
+		println "[GRIFFON] 'jython.compile.classpath' entries"
+		ant.project.getReference('jython.compile.classpath').list().each {println("  $it")}
+		println('-' * 80)
+	}
 }
 
 defineJythonTestPath = { srcdir, destdir ->
@@ -103,11 +108,18 @@ defineJythonTestPath = { srcdir, destdir ->
 		pathElement(location: destdir)
 		pathElement(location: srcdir)
 	}
+
+	if (argsMap.compileTrace) {
+		println('-' * 80)
+		println "[GRIFFON] 'jython.test.classpath' entries"
+		ant.project.getReference('jython.test.classpath').list().each {println("  $it")}
+		println('-' * 80)
+	}
 }
 
-compileJythonFiles = { jythonsrcdir, classesDirPath ->
+compileJythonFiles = { jythonsrcdir, projectMainClassesDir ->
 	ant.taskdef(name: 'jycompile', classname: 'org.python.util.JycompileAntTask', classpathref: 'jython.compile.classpath')
-	ant.jycompile(srcdir: jythonsrcdir, destdir: classesDirPath) {
+	ant.jycompile(srcdir: jythonsrcdir, destdir: projectMainClassesDir) {
 		classpath { path(refid: 'jython.compile.classpath') }
 	}
 }
