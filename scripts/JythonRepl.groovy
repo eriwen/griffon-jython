@@ -26,7 +26,7 @@ includeTargets << griffonScript("_GriffonPackage")
 includePluginScript("jython", "_JythonCommon")
 
 target(default: "Run Jython REPL") {
-    depends(checkVersion, classpath, packageApp)
+    depends(classpath, packageApp)
 
     addUrlIfNotPresent classLoader.parent, projectMainClassesDir
     addUrlIfNotPresent classLoader.parent, resourcesDir

@@ -31,7 +31,7 @@ import org.python.core.imp as JythonImp
 import org.python.modules._py_compile
 
 target(name: 'compileJythonSrc', description: "", prehook: null, posthook: null) {
-    depends(parseArguments, compileCommons)
+    depends(compileCommons)
 
     def jythonsrc = "${basedir}/src/jython"
     def jythonsrcdir = new File(jythonsrc)
@@ -58,8 +58,6 @@ target(name: 'compileJythonSrc', description: "", prehook: null, posthook: null)
 }
 
 target(name: 'compileJythonTest', description: "", prehook: null, posthook: null) {
-    depends(parseArguments)
-
     def jythontest = "${basedir}/test/jython"
     def jythontestdir = new File(jythontest)
     if(!jythontestdir.exists() || !jythontestdir.list().size()) {

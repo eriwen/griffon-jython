@@ -24,8 +24,6 @@
 includeTargets << griffonScript("_GriffonCreateArtifacts")
 
 target('default': "Creates a new Jython script") {
-    depends(parseArguments)
-
     promptForName(type: 'Script')
 
     def name = argsMap["params"][0]

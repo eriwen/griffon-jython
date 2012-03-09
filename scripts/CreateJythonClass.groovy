@@ -26,7 +26,6 @@ import org.codehaus.griffon.commons.GriffonClassUtils as GCU
 includeTargets << griffonScript("_GriffonCreateArtifacts")
 
 target(default: "Creates a new Jython class") {
-    depends(checkVersion, parseArguments)
     promptForName(type: "Class")
     def (pkg, name) = extractArtifactName(argsMap["params"][0])
     pkg = pkg ?: "griffon"
