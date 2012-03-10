@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 the original author or authors.
+ * Copyright 2009-2012 the original author or authors.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,7 @@
  * @author Eric Wendelin
  * @since 0.1
  */
-
-import org.codehaus.griffon.commons.GriffonClassUtils as GCU
+import griffon.util.GriffonNameUtils as GNU
 
 includeTargets << griffonScript("_GriffonCreateArtifacts")
 
@@ -29,7 +28,7 @@ target(default: "Creates a new Jython class") {
     promptForName(type: "Class")
     def (pkg, name) = extractArtifactName(argsMap["params"][0])
     pkg = pkg ?: "griffon"
-    def clazzName = GCU.getClassNameRepresentation(name)
+    def clazzName = GNU.getClassNameRepresentation(name)
     def clazz = "${pkg}.${clazzName}"
 
     def packageDir = new File("${basedir}/src/jython/${pkg.replace('.','/')}")
