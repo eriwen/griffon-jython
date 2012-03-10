@@ -36,7 +36,7 @@ class JythonGriffonPlugin {
     // linux, linux64, windows, windows64, macosx, macosx64, solaris
     List platforms = []
     // URL where documentation can be found
-    String documentation = ''
+    String documentation = 'http://griffon.codehaus.org/Jython+Plugin'
     // URL where source can be found
     String source = 'https://github.com/eriwen/griffon-jython'
 
